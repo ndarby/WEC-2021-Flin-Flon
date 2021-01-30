@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Paper } from "@material-ui/core";
 import Chart from "./Chart";
+import Board from "../chessboard/Board";
 
 const DataVisualization = () => {
   const getNewDatum = async () => {
@@ -28,36 +29,39 @@ const DataVisualization = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-      spacing={3}
-    >
-      <Grid item xs={2} />
+    <div>
       <Grid
         container
-        item
-        direction="row"
+        direction="column"
         justify="center"
         alignItems="center"
         spacing={3}
-        xs={8}
       >
-        <Grid item xs={1} s={2} />
-        <Grid item xs={10} s={8}>
-          <Paper>
-            <Chart data={data} />
-          </Paper>
+        <Grid item xs={2} />
+        <Grid
+          container
+          item
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={3}
+          xs={8}
+        >
+          <Grid item xs={1} s={2} />
+          <Grid item xs={10} s={8}>
+            <Paper>
+              <Chart data={data} />
+            </Paper>
+          </Grid>
+          <Grid item xs={1} s={2} />
         </Grid>
-        <Grid item xs={1} s={2} />
-      </Grid>
 
-      <Grid item xs={2}>
-        <button onClick={getMoreData}>Get more data</button>
+        <Grid item xs={2}>
+          <button onClick={getMoreData}>Get more data</button>
+        </Grid>
       </Grid>
-    </Grid>
+      <Board size={8} />
+    </div>
   );
 };
 

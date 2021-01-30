@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 const db = require("mime-db");
 
 const FileDownload = () => {
