@@ -51,9 +51,7 @@ def requests():
     print('---form data fields---')
     for key, value in request.form.items():
         print(f'{key}: {value}')
-    #PlayerService.insert_user(request.form['username'])
-    return {'message': 'hello moose',
-            'username': request.form['username']}
+    return {'gameID': request.form['gameID']}
 
 
 @app.route('/upload_request', methods=['POST'])

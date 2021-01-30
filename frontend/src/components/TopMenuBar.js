@@ -41,18 +41,11 @@ const TopMenuBar = () => {
           <MenuItem onClick={handleMenuClose}>
             <Link to="/">Home</Link>
           </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/form">Form</Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/file">File</Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/download">Download</Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link to="/data">Data</Link>
-          </MenuItem>
+          {isAuthenticated && (
+            <MenuItem onClick={handleMenuClose}>
+              <Link to="/gameplay">Current Game</Link>
+            </MenuItem>
+          )}
         </Menu>
         <Typography variant="h6">Frontend</Typography>
         {isAuthenticated ? <LogoutButton /> : <LoginButton />}

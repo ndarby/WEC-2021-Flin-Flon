@@ -1,23 +1,22 @@
-import React, { useEffect } from "react";
-import Form from "./components/Form";
+import React from "react";
+import DashBoard from "./pages/DashBoard";
 import TopMenuBar from "./components/TopMenuBar";
-import FileUpload from "./components/FileUpload";
-import PageNotFound from "./components/PageNotFound";
-import Home from "./components/Home";
-import FileDownload from "./components/FileDownload";
-import DataVisualization from "./components/DataVisualization";
+import PageNotFound from "./pages/PageNotFound";
+import Home from "./pages/Home";
 import { Switch, Route } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import GamePlay from "./pages/GamePlay";
+import ProtectedRoute from "./auth/protected-route";
 
 function App() {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <div className="App">
       <TopMenuBar />
       <Switch>
-        <Route path="/form" component={Form} />
-        <Route path="/file" component={FileUpload} />
-        <Route path="/download" component={FileDownload} />
-        <Route path="/data" component={DataVisualization} />
-        <Route path="/" component={Home} exact />
+        <Route path="/" component={isAuthenticated ? DashBoard : Home} exact />
+        <ProtectedRoute path="/gameplay" component={GamePlay} />
         <Route component={PageNotFound} />
       </Switch>
     </div>
