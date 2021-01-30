@@ -34,14 +34,14 @@ class chessBoard:
     def makeMove(self, player, piece, location):
 
         if player != self.whoseTurn:
-            return False
+            return False, ""
 
         if (self.size - 1 < location[0] < 0) or (self.size - 1 < location[1] < 0):
-            return False
+            return False, ""
 
         pcObj = self.findPiece(piece)
         if pcObj is None:
-            return False
+            return False, ""
 
         if self.whoseTurn == "White":
             madeMove = pcObj.makeMove(location, self.getWhiteLocations(), self.getBlackLocations())
@@ -59,7 +59,7 @@ class chessBoard:
 
         # check for check/mate/draw
 
-        return True
+        return True, ""
 
     def isMate(self):
         # isCheck()
@@ -157,7 +157,7 @@ class chessBoard:
             knight((1, 0), 9, "bk1", 8),
             bishop((2, 0), 10, "bb1", 8),
             queen((3, 0), 11, "bq1", 8),
-            king((4, 0), 12, "bk1", 8),
+            king((4, 0), 12, "bK1", 8),
             bishop((5, 0), 13, "bb2", 8),
             knight((6, 0), 14, "bk2", 8),
             rook((7, 0), 15, "br2", 8)
@@ -171,7 +171,7 @@ class chessBoard:
             knight((1, 7), 25, "wk1", 8),
             bishop((2, 7), 26, "wwb1", 8),
             queen((3, 7), 27, "wq1", 8),
-            king((4, 7), 28, "wk1", 8),
+            king((4, 7), 28, "wK1", 8),
             bishop((5, 7), 29, "wb2", 8),
             knight((6, 7), 30, "wk2", 8),
             rook((7, 7), 31, "wr2", 8)
