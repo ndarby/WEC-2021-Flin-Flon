@@ -7,15 +7,13 @@ class chessGame:
     completed = False
     winner = ""
 
-    def __init__(self):
+    def __init__(self, email, color, size):
 
         return
 
     def getUserInput(self, info):
 
-        # Read Socket
-        # Check move with board
-        # Return if move made or not
+
 
         return
 
