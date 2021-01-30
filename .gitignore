@@ -1,0 +1,23 @@
+# backend stuff
+/backend/venv/
+/backend/__pycache__/
+/backend/static/other/**
+/backend/static/css/**
+/backend/static/js/**
+/backend/static/*.*
+/backend/uploads/**
+
+# frontend stuff
+node_modules/
+/frontend/build/**
+package-lock.json
+*.lock
+**.chunk*
+
+# IDE stuff
+.DS_Store
+.idea/
+.vscode/
+
+# web stuff
+.eslintcache*
