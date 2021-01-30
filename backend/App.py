@@ -28,9 +28,7 @@ def requests():
     print('---form data fields---')
     for key, value in request.form.items():
         print(f'{key}: {value}')
-    Database.insert_user(request.form['username'])
-    return {'message': 'hello moose' if check_username(request.form['username']) else 'hello world',
-            'username': request.form['username']}
+    return {'gameID': request.form['gameID']}
 
 
 @app.route('/upload_request', methods=['POST'])
