@@ -1,0 +1,112 @@
+game/create
+Create
+{
+    "email": "mail@mail.com",
+    "color" = "White",
+    "size" = int (8, 10, 12, 14, 16)
+}
+RESPONSE
+{
+    "gameID": int,
+    "success": True,
+    "message": "Game created"
+}
+
+
+Join
+{
+    "email": "mail@mail.com",
+    "gameID": int
+}
+RESPONSE
+{
+    "Success": True,
+    "message": "Joined game"
+}
+->Redirect to game state
+
+
+
+Get Current Games
+{
+    "email": "mail@mail.com"
+}
+RESPONSE
+{
+    "openGames": [list of gameIDs],
+    "message": "something"
+}
+
+
+Get Metrics
+{
+    "email": "mail@mail.com"
+}
+RESPONSE
+{
+    "metrics": {"WINS": stuff},
+    "message": "something"
+}
+
+
+
+Make a Move
+-> Your Email (Which player)
+-> Which Piece (PieceID)
+-> Location (Where to Move)
+
+game/makemove
+{
+    "gameID": int
+    "email": "mail@mail.com",
+    "pieceID": 0, 1, 2...,
+    "location": ([2] = 00, [2] = 00)
+}
+RESPONSE
+{
+    "move": True or False,
+    "reason": "Blocked, outside piece def, check"
+}
+
+
+
+game/resign
+Resign
+-> Quitter
+{
+    "gameID": int,
+    "email": "mail@mail.com",
+    "whuss" = True
+}
+Response
+{
+    "success" = True,
+    "message" = "Game resigned"
+}
+
+
+
+game/currentstate
+Game Board State
+{
+    "gameID": int
+    "email": "mail@mail.com",
+}
+
+RESPONSE
+{
+    "board":
+    {
+        "myPieces" [0] = {
+            "pieceID": int,
+            "name": "something",
+            "location": ([2] = 00, [2] = 00)
+        },
+        "oppPieces" [0] = {
+            "pieceID": int,
+            "name": "something",
+            "location": ([2] = 00, [2] = 00)
+        },
+        "myColor" = "White"
+    }
+}
