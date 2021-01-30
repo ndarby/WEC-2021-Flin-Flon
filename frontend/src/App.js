@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DashBoard from "./pages/DashBoard";
 import TopMenuBar from "./components/TopMenuBar";
 import PageNotFound from "./pages/PageNotFound";
@@ -10,13 +10,17 @@ import ProtectedRoute from "./auth/protected-route";
 
 function App() {
   const { isAuthenticated } = useAuth0();
+  const [gameID, setGameID] = useState(-1);
 
   return (
     <div className="App">
       <TopMenuBar />
       <Switch>
         <Route path="/" component={isAuthenticated ? DashBoard : Home} exact />
-        <ProtectedRoute path="/gameplay" component={GamePlay} />
+        <ProtectedRoute
+          path="/gameplay"
+          render={(props) => <GamePlay {...props} gameID={gameID} />}
+        />
         <Route component={PageNotFound} />
       </Switch>
     </div>
