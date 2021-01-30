@@ -26,25 +26,20 @@ RESPONSE
 ->Redirect to game state
 
 
-
-Get Current Games
+api: /dashboard
+Get User Dashboard
 {
     "email": "mail@mail.com"
 }
 RESPONSE
 {
+    "playerInfo": 
+        {
+            "email": "email@email.com",
+            "screenName": "user",
+            "metrics" : {"wins": 1, "losses": 100, "gamesPlayed": 101}
+        }
     "openGames": [list of gameIDs],
-    "message": "something"
-}
-
-
-Get Metrics
-{
-    "email": "mail@mail.com"
-}
-RESPONSE
-{
-    "metrics": {"WINS": stuff},
     "message": "something"
 }
 
