@@ -2,8 +2,6 @@ from flask import Flask, request, send_file, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
 
-from backend.Services import PlayerService
-
 UPLOAD_FOLDER = 'uploads'
 
 
@@ -12,13 +10,39 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'howdy cowboy'
 
 
-def check_username(name):
-    return name == 'moose'
-
-
 @app.route('/')
 def frontend():
     return app.send_static_file('index.html')
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+def playerDashboard(email):
+    pass
+
+
+@app.route('/game/create', methods=['GET', 'POST'])
+def createGame(email, color, size):
+    pass
+
+
+@app.route('game/join', methods=['GET', 'POST'])
+def joinGame(email, gameID):
+    pass
+
+
+@app.route('game/makemove', methods=['GET', 'POST'])
+def makeMove(gameID, email, pieceID, location):
+    pass
+
+
+@app.route('game/resign', methods=['GET', 'POST'])
+def resign(gameID, email):
+    pass
+
+
+@app.route('game/currentstate', methods=['GET', 'POST'])
+def getGameBoardState(gameID,email):
+    pass
 
 
 @app.route('/requests', methods=['GET', 'POST'])
@@ -27,8 +51,8 @@ def requests():
     print('---form data fields---')
     for key, value in request.form.items():
         print(f'{key}: {value}')
-    PlayerService.insert_user(request.form['username'])
-    return {'message': 'hello moose' if check_username(request.form['username']) else 'hello world',
+    #PlayerService.insert_user(request.form['username'])
+    return {'message': 'hello moose',
             'username': request.form['username']}
 
 
