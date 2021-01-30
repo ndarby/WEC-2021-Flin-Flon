@@ -5,6 +5,7 @@ class chessGame:
     blackPlayer = ""
     whitePlayer = ""
     completed = False
+    winner = ""
 
     def __init__(self):
 
