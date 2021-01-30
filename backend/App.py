@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, send_from_directory
+from flask import Flask, request, send_file, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
 
-import Database
-
+from backend.Services import PlayerService
 
 UPLOAD_FOLDER = 'uploads'
 
@@ -28,7 +27,9 @@ def requests():
     print('---form data fields---')
     for key, value in request.form.items():
         print(f'{key}: {value}')
+
     return {'gameID': request.form['gameID']}
+
 
 
 @app.route('/upload_request', methods=['POST'])
