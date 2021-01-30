@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import {MenuItem, InputLabel} from "@material-ui/core";
+import Select from "@material-ui/core/Select";
+
 
 const Form = () => {
   const [response, setResponse] = useState("");
@@ -7,7 +10,7 @@ const Form = () => {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch("requests", {
+    fetch("available_games", {
       method: "POST",
       body: data,
     })
@@ -19,15 +22,27 @@ const Form = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="username">Enter username </label>
-      <input id="username" name="username" type="text" />
+      <form onSubmit={handleSubmit}>
 
-      <label htmlFor="email">Enter your email </label>
-      <input id="email" name="email" type="email" />
+      <header>
+          <h1> Game Dashboard</h1>
+          <p>Create a game, enter the ID for games you would like to join, or select a game from the menu!</p>
+      </header>
 
-      <button>Send data</button>
-      <h1>Response</h1>
+        <button>Create new Game!</button>
+        <p></p>
+
+      <label htmlFor="gameID">Game ID for game you would like to join:  </label>
+      <input id="gameID" name="gameID" type="text" />
+
+      <button>Request to join game</button>
+      <p></p>
+
+      <InputLabel id="label">Available Games for you!</InputLabel>
+        <Select labelId="label" id="select" value="20">
+        </Select>
+
+      <h1> Your Metrics</h1>
       <p>{response}</p>
     </form>
   );
