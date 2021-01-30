@@ -1,17 +1,27 @@
 import React, { useState } from "react";
 import { MenuItem, InputLabel } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
+import { useHistory } from "react-router-dom";
+import {useAuth0} from "@auth0/auth0-react";
+
 
 const DashBoard = () => {
-  const [response, setResponse] = useState("");
+  let history = useHistory();
 
-  const handleSubmit = (event) => {
+
+  const { user } = useAuth0();
+  const { email } = user;
+
+  const [response, setResponse] = useState("");
+  const [gameID, setgameID] = useState( "")
+
+  const getGames = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch("available_games", {
+    fetch("Get User Dashboard", {
       method: "POST",
-      body: data,
+      body: {email : email}
     })
       .then((res) => res.json())
       .then((data) => {
@@ -20,7 +30,30 @@ const DashBoard = () => {
       });
   };
 
-  return (
+  const handleSubmit = (event) => {
+    const data = new FormData(event.target);
+
+    fetch("Join", {
+      method: "POST",
+      body: {email : email, gameID: gameID}
+    })
+        .then((res) => res.json())
+        .then((data) => {
+        console.log(data);
+        setResponse(JSON.stringify(data));
+      });
+
+  };
+
+
+  const CreateNewGame = () =>{
+
+    history.push('/creategame');
+
+  }
+
+
+    return (
     <form onSubmit={handleSubmit}>
       <header>
         <h1> Game Dashboard</h1>
@@ -30,13 +63,13 @@ const DashBoard = () => {
         </p>
       </header>
 
-      <button>Create new Game!</button>
+      <button onClick={CreateNewGame}> Create new Game! </button>
       <p></p>
 
       <label htmlFor="gameID">Game ID for game you would like to join: </label>
       <input id="gameID" name="gameID" type="text" />
 
-      <button>Request to join game</button>
+      <button onClick = {handleSubmit}>Request to join game</button>
       <p></p>
 
       <InputLabel id="label">Available Games for you!</InputLabel>

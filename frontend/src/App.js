@@ -7,6 +7,7 @@ import { Switch, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import GamePlay from "./pages/GamePlay";
 import ProtectedRoute from "./auth/protected-route";
+import CreateGame from "./pages/CreateGame";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -17,11 +18,17 @@ function App() {
       <TopMenuBar />
       <Switch>
         <Route path="/" component={isAuthenticated ? DashBoard : Home} exact />
+<<<<<<< Updated upstream
         <ProtectedRoute
           path="/gameplay"
           render={(props) => <GamePlay {...props} gameID={gameID} />}
         />
+=======
+        <ProtectedRoute path="/gameplay" component={GamePlay} />
+        <Route path = "/creategame" component = {CreateGame}/>
+>>>>>>> Stashed changes
         <Route component={PageNotFound} />
+
       </Switch>
     </div>
   );
