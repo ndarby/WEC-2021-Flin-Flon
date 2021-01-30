@@ -14,7 +14,10 @@ const Board = ({ size, pieces }) => {
           {range.map((j) => (
             <td>
               {pieces[i][j] && (
-                <img src={`/chess_pieces/${pieces[i][j]}.svg`} />
+                <img
+                  src={`/chess_pieces/${pieces[i][j]}.svg`}
+                  alt="image source cannot be found"
+                />
               )}
             </td>
           ))}
