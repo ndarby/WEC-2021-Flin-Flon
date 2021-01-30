@@ -4,6 +4,7 @@ class chessBoard:
     piecesBlack = []  # Array of Pieces
     size = 0
     whoseTurn = "White"
+    gameID = 0
 
     # 8 - 16 square
 
