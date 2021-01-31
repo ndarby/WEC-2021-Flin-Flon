@@ -30,6 +30,9 @@ class chessGame:
 
         return
 
+    def __init__(self):
+        pass
+
     def playerJoin(self, email):
 
         if self.whitePlayer == "":
@@ -95,5 +98,5 @@ class chessGame:
         return [self.chessBoard, self.chessBoard.size, self.chessBoard.whoseTurn, player]
 
     def todict(self):
-        return {'gameID': self.gameID, 'chessBoard': chessBoard.todict(), 'blackPlayer': self.blackPlayer, 'whitePlayer': self.whitePlayer, 'completed': self.completed, 'winner': self.winner}
+        return {'gameID': self.gameID, 'chessBoard': self.chessBoard.todict(), 'blackPlayer': self.blackPlayer, 'whitePlayer': self.whitePlayer, 'completed': self.completed, 'winner': self.winner}
 

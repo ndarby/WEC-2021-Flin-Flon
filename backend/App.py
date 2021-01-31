@@ -1,9 +1,9 @@
 from flask import Flask, request, send_file, redirect, url_for
-import flask
 from werkzeug.utils import secure_filename
 from Services import GameService, PlayerService
 import os
 from chessGame import chessGame
+from chessBoard import chessBoard
 from player import Player
 
 UPLOAD_FOLDER = 'uploads'
@@ -26,15 +26,16 @@ def playerDashboard():
     email = content['email']
 
     foundPlayer = PlayerService.read_player(email)
+    del foundPlayer['_id']
 
     if foundPlayer is None:
         newPlayer = Player(email, email)
         PlayerService.add_player(newPlayer.todict())
         return {"success": True, "message": "created new player", "player": newPlayer, "openGames": []}
 
-    allGames = GameService.read_all_open_games_for_player(foundPlayer.email)
+    allGames = GameService.read_all_open_games_for_player(foundPlayer['email'])
 
-    return {"Success": True, "Message": "Found player", "Player": foundPlayer, "OpenGames": allGames}
+    return {"success": True, "message": "Found player", "player": foundPlayer, "openGames": allGames}
 
 
 @app.route('/dashboard/changename', methods=['GET', 'POST'])
@@ -47,12 +48,12 @@ def changeName():
     foundPlayer = PlayerService.read_player(email)
 
     if foundPlayer is None:
-        return {"Success": False, "Message": "Failed to find player", "Player": None, "OpenGames": []}
+        return {"success": False, "message": "Failed to find player", "player": None, "OpenGames": []}
 
     foundPlayer.screenName = name
     PlayerService.update_player(email, foundPlayer)
 
-    return {"Success": True, "Message": "Updated Name", "Player": foundPlayer}
+    return {"success": True, "message": "Updated Name", "player": foundPlayer}
 
 
 @app.route('/game/create', methods=['GET', 'POST'])
@@ -66,7 +67,7 @@ def createGame():
 
     newGame = chessGame(email, color, size)
 
-    success, message = GameService.create_new_game(newGame)
+    success, message = GameService.create_new_game(newGame.todict())
 
     return {"success": success, "message": message, "gameID": newGame.gameID}
 
@@ -83,12 +84,26 @@ def joinGame():
     if foundGame is None:
         return {"Success": False, "Message": "Could not find game"}
 
-    if not foundGame.playerJoin(email):
-        return {"Success": False, "Message": "Could not join game"}
+    game = chessGame()
+    game.gameID = gameID
+    board = foundGame['chessBoard']
+    game.chessBoard = chessBoard(board['size'])
+    game.chessBoard.piecesWhite = board['piecesWhite']
+    game.chessBoard.piecesBlack = board['piecesBlack']
+    game.chessBoard.whoseTurn = 'White'
+    game.chessBoard.gameID = gameID
+    game.chessBoard.whiteQueen = 5
+    game.chessBoard.blackQueen = 5
+    game.blackPlayer = foundGame['blackPlayer']
+    game.completed = False
+    game.winner = ''
 
-    success, message = GameService.update_game(gameID, foundGame)
+    if not game.playerJoin(email):
+        return {"success": False, "message": "Could not join game"}
 
-    return {"Success": success, "Message": message}
+    success, message = GameService.update_game(gameID, game.todict())
+
+    return {"success": success, "message": message}
 
 
 @app.route('/game/makemove', methods=['GET', 'POST'])

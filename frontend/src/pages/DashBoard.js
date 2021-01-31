@@ -30,9 +30,9 @@ const DashBoard = ({ setGameID }) => {
       body: JSON.stringify({ email: email }),
     })
       .then((res) => res.json())
-      .then(({ playerInfo, openGames, message }) => {
+      .then(({ openGames, message }) => {
+        console.log(openGames);
         setOpenGames(openGames);
-        setMetrics(playerInfo.metrics);
       });
   };
 
