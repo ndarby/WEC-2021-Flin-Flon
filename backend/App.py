@@ -30,7 +30,7 @@ def playerDashboard():
     if foundPlayer is None:
         newPlayer = Player(email, email)
         PlayerService.add_player(newPlayer.todict())
-        return {"Success": True, "Message": "Created new player", "Player": newPlayer, "OpenGames": []}
+        return {"success": True, "message": "created new player", "player": newPlayer, "openGames": []}
 
     allGames = GameService.read_all_open_games_for_player(foundPlayer.email)
 
@@ -50,7 +50,7 @@ def changeName():
         return {"Success": False, "Message": "Failed to find player", "Player": None, "OpenGames": []}
 
     foundPlayer.screenName = name
-    PlayerService.update_player(email, foundPlayer.todict())
+    PlayerService.update_player(email, foundPlayer)
 
     return {"Success": True, "Message": "Updated Name", "Player": foundPlayer}
 
@@ -66,7 +66,7 @@ def createGame():
 
     newGame = chessGame(email, color, size)
 
-    success, message = GameService.create_new_game(newGame.todict())
+    success, message = GameService.create_new_game(newGame)
 
     return {"success": success, "message": message, "gameID": newGame.gameID}
 
@@ -86,7 +86,7 @@ def joinGame():
     if not foundGame.playerJoin(email):
         return {"Success": False, "Message": "Could not join game"}
 
-    success, message = GameService.update_game(gameID, foundGame.todict())
+    success, message = GameService.update_game(gameID, foundGame)
 
     return {"Success": success, "Message": message}
 

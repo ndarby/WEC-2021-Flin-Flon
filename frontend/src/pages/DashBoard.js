@@ -37,6 +37,7 @@ const DashBoard = ({ setGameID }) => {
   };
 
   const joinGame = (event) => {
+    event.preventDefault();
     fetch("game/join", {
       method: "POST",
       headers: {
@@ -56,7 +57,8 @@ const DashBoard = ({ setGameID }) => {
       });
   };
 
-  const CreateNewGame = () => {
+  const CreateNewGame = (event) => {
+    event.preventDefault();
     history.push("/creategame");
   };
 

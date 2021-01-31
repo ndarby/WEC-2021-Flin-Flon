@@ -26,7 +26,12 @@ const Board = ({ size, pieces, IDArray, makeMove }) => {
         <tr>
           {range.map((j) => (
             <td>
-              <div onClick={() => handleClick([i][j], IDArray[i][j])}>
+              <div
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleClick([i][j], IDArray[i][j]);
+                }}
+              >
                 {pieces[i][j] && (
                   <img
                     src={`/chess_pieces/${pieces[i][j]}.svg`}

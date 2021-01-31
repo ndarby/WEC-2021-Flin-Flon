@@ -16,6 +16,7 @@ const CreateGame = ({ setGameID }) => {
   });
 
   const handleChange = (event) => {
+    event.cancelDefault();
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
@@ -44,7 +45,7 @@ const CreateGame = ({ setGameID }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <header>
         <h1> Create Game</h1>
         <p>Enter the ID of the friend to play with and size of the board</p>
