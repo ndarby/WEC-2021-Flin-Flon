@@ -8,6 +8,8 @@ class chessBoard:
     size = 8
     whoseTurn = "White"
     gameID = 0
+    whiteQueen = 5
+    blackQueen = 5
 
     # 8 - 16 square
 
@@ -34,21 +36,31 @@ class chessBoard:
     def makeMove(self, player, piece, location):
 
         if player != self.whoseTurn:
-            return False
+            return False, ""
 
         if (self.size - 1 < location[0] < 0) or (self.size - 1 < location[1] < 0):
-            return False
+            return False, ""
 
         pcObj = self.findPiece(piece)
         if pcObj is None:
-            return False
+            return False, ""
 
         if self.whoseTurn == "White":
             madeMove = pcObj.makeMove(location, self.getWhiteLocations(), self.getBlackLocations())
+            if "q" in pcObj.name:
+                if self.whiteQueen < 5:
+                    madeMove = False
+
         else:
             madeMove = pcObj.makeMove(location, self.getBlackLocations(), self.getWhiteLocations())
 
         if madeMove:
+
+            if self.whoseTurn == "White":
+                self.whiteQueen += 1
+            elif self.whoseTurn == "Black":
+                self.blackQueen += 1
+
             self.removeByLocation(location)
             pcObj.location = location
 
@@ -59,7 +71,7 @@ class chessBoard:
 
         # check for check/mate/draw
 
-        return True
+        return True, ""
 
     def isMate(self):
         # isCheck()
@@ -149,29 +161,45 @@ class chessBoard:
         # 14-> RRKKBBQKBBKKRR
         # 16-> RRKKBBQQKQBBKKRR
 
-        idCount = 0
-        blackFront = [pawn((i, 1), idCount + i, "bp{}".format(i + 1), 8) for i in range(0, 8)]
+        blackFront = [
+            vanguard((0, 1), 0, "bv1", 8),
+            pawn((1, 1), 1, "bp1", 8),
+            pawn((2, 1), 2, "bp2", 8),
+            pawn((3, 1), 3, "bp3", 8),
+            pawn((4, 1), 4, "bp4", 8),
+            pawn((5, 1), 5, "bp5", 8),
+            pawn((6, 1), 6, "bp6", 8),
+            vanguard((7, 1), 7, "bv2", 8)
+        ]
 
         blackBack = [
             rook((0, 0), 8, "br1", 8),
             knight((1, 0), 9, "bk1", 8),
             bishop((2, 0), 10, "bb1", 8),
             queen((3, 0), 11, "bq1", 8),
-            king((4, 0), 12, "bk1", 8),
+            king((4, 0), 12, "bK1", 8),
             bishop((5, 0), 13, "bb2", 8),
             knight((6, 0), 14, "bk2", 8),
             rook((7, 0), 15, "br2", 8)
         ]
 
-        idCount = 16
-        whiteFront = [pawn((i, 6), idCount + i, "wp{}".format(i + 1), 8) for i in range(0, 8)]
+        whiteFront = [
+            vanguard((0, 6), 16, "wv1", 8),
+            pawn((1, 6), 17, "wp1", 8),
+            pawn((2, 6), 18, "wp2", 8),
+            pawn((3, 6), 19, "wp3", 8),
+            pawn((4, 6), 20, "wp4", 8),
+            pawn((5, 6), 21, "wp5", 8),
+            pawn((6, 6), 22, "wp6", 8),
+            vanguard((7, 6), 23, "wv2", 8)
+        ]
 
         whiteBack = [
             rook((0, 7), 24, "wr1", 8),
             knight((1, 7), 25, "wk1", 8),
-            bishop((2, 7), 26, "wwb1", 8),
+            bishop((2, 7), 26, "wb1", 8),
             queen((3, 7), 27, "wq1", 8),
-            king((4, 7), 28, "wk1", 8),
+            king((4, 7), 28, "wK1", 8),
             bishop((5, 7), 29, "wb2", 8),
             knight((6, 7), 30, "wk2", 8),
             rook((7, 7), 31, "wr2", 8)
@@ -198,23 +226,25 @@ class chessBoard:
         return
 
 
-if __name__ == '__main__':
-    board = chessBoard(8)
-    board.printBoard()
-    board.makeMove("White", "wp1", (0, 5))
-    board.printBoard()
-    board.makeMove("Black", "bp1", (0, 4))
-    board.printBoard()
-    board.makeMove("White", "wp4", (3, 4))
-    board.printBoard()
-    board.makeMove("Black", "bp2", (1, 4))
-    board.printBoard()
-    board.makeMove("White", "wp1", (1, 4))
-    board.printBoard()
-    board.makeMove("Black", "bp1", (0, 6))
-    board.printBoard()
-    board.makeMove("White", "wr1", (0, 5))
-    board.printBoard()
-    board.makeMove("White", "wr1", (0, 5))
-    board.printBoard()
+# if __name__ == '__main__':
+#     board = chessBoard(8)
+#     board.printBoard()
+#     board.makeMove("White", "wv1", (4, 4))
+#     board.printBoard()
+#     board.makeMove("Black", "bv1", (4, 4))
+#     board.printBoard()
+#     board.makeMove("White", "wv2", (4, 4))
+#     board.printBoard()
+#     board.makeMove("Black", "bv2", (4, 4))
+#     board.printBoard()
+    # board.makeMove("White", "wp1", (1, 4))
+    # board.printBoard()
+    # board.makeMove("Black", "bp1", (0, 6))
+    # board.printBoard()
+    # board.makeMove("White", "wr1", (0, 5))
+    # board.printBoard()
+    # board.makeMove("White", "wr1", (0, 6))
+    # board.printBoard()
+    # board.makeMove("Black", "bk1", (2, 3))
+    # board.printBoard()
 

@@ -18,7 +18,9 @@ def update_player(email, player):
     return True, f"Player with email {email} was updated successfully"
 
 
-
+def add_player(player):
+    playerCollection.insert_one(player)
+    return True
 
 
 
