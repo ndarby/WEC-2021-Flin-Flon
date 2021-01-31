@@ -12,11 +12,13 @@ class chessGame:
     completed = False
     winner = ""
 
+
+
     def __init__(self, email, color, size):
 
         self.gameID = randint(100000, 999999)
-        while not Services.GameService.check_game_id_unused(self.gameID):
-            self.gameID = randint(100000, 999999)
+        # while not Services.GameService.check_game_id_unused(self.gameID):
+        #     self.gameID = randint(100000, 999999)
 
         self.chessBoard = chessBoard(size)
         if color.lower() == "white":
@@ -26,9 +28,10 @@ class chessGame:
         else:
             self.whitePlayer = email
 
-        Services.GameService.create_new_game(self)
-
         return
+
+    def __init__(self):
+        pass
 
     def playerJoin(self, email):
 
@@ -93,4 +96,7 @@ class chessGame:
             return -1
 
         return [self.chessBoard, self.chessBoard.size, self.chessBoard.whoseTurn, player]
+
+    def todict(self):
+        return {'gameID': self.gameID, 'chessBoard': self.chessBoard.todict(), 'blackPlayer': self.blackPlayer, 'whitePlayer': self.whitePlayer, 'completed': self.completed, 'winner': self.winner}
 

@@ -16,17 +16,22 @@ const CreateGame = ({ setGameID }) => {
   });
 
   const handleChange = (event) => {
+    event.cancelDefault();
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
   const handleSubmit = (event) => {
     fetch("game/create", {
       method: "POST",
-      body: {
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         email: email,
         color: state.checked ? "White" : "Black",
         size: size,
-      },
+      }),
     })
       .then((res) => res.json())
       .then(({ gameID, success, message }) => {
@@ -40,7 +45,7 @@ const CreateGame = ({ setGameID }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <header>
         <h1> Create Game</h1>
         <p>Enter the ID of the friend to play with and size of the board</p>

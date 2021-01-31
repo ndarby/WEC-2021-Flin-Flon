@@ -20,16 +20,11 @@ function App() {
         <Route path="/" component={isAuthenticated ? DashBoard : Home} exact />
         <ProtectedRoute
           path="/gameplay"
-          render={(props) => <GamePlay {...props} gameID={gameID} />}
-        />
-        <ProtectedRoute
-          path="/gameplay"
-          component={GamePlay}
-          render={(props) => <GamePlay {...props} setGameID={setGameID} />}
+          component={() => <GamePlay gameID={gameID} />}
         />
         <ProtectedRoute
           path="/creategame"
-          render={(props) => <CreateGame {...props} setGameID={setGameID} />}
+          component={() => <CreateGame setGameID={setGameID} />}
         />
         <Route component={PageNotFound} />
       </Switch>

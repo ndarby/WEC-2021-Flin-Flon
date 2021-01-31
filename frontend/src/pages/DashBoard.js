@@ -23,19 +23,28 @@ const DashBoard = ({ setGameID }) => {
 
     fetch("dashboard", {
       method: "POST",
-      body: { email: email },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email }),
     })
       .then((res) => res.json())
-      .then(({ playerInfo, openGames, message }) => {
+      .then(({ openGames, message }) => {
+        console.log(openGames);
         setOpenGames(openGames);
-        setMetrics(playerInfo.metrics);
       });
   };
 
   const joinGame = (event) => {
+    event.preventDefault();
     fetch("game/join", {
       method: "POST",
-      body: { email: email, gameID: newGameID },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, gameID: newGameID }),
     })
       .then((res) => res.json())
       .then(({ success, message }) => {
@@ -48,12 +57,13 @@ const DashBoard = ({ setGameID }) => {
       });
   };
 
-  const CreateNewGame = () => {
+  const CreateNewGame = (event) => {
+    event.preventDefault();
     history.push("/creategame");
   };
 
   return (
-    <form onSubmit={joinGame}>
+    <form>
       <header>
         <h1> Game Dashboard</h1>
         <p>
@@ -83,7 +93,7 @@ const DashBoard = ({ setGameID }) => {
         openGames={openGames}
         getGames={getGames}
         setNewGameID={setNewGameID}
-        joinGame={joinGame()}
+        joinGame={joinGame}
       />
 
       <h1> Your Metrics</h1>

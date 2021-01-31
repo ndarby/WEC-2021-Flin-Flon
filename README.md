@@ -1,5 +1,4 @@
-# WEC-2020-Practice
-Practice for WEC 2020
+# WEC 2021 Flin Flon
 
 ### Team:
 
@@ -10,6 +9,9 @@ Practice for WEC 2020
 **Jared Gillis**
 
 **Nathan Darby**
+
+
+
 from WEC-2021-Flin-Flon/frontend run sudo install requirements.txt
 
 from WEC-2021-Flin-Flon/frontend run "npm install". This should install all dependencies. 

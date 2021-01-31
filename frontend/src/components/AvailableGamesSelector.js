@@ -8,18 +8,17 @@ const AvailableGamesSelector = ({
   setNewGameID,
 }) => {
   return (
-    <Select
-      labelId="label"
-      id="select"
-      value="20"
-      onClick={getGames}
-      onChange={(event) => {
-        setNewGameID(event.target.value);
-        joinGame();
-      }}
-    >
+    <Select labelId="label" id="select" value="20" onClick={getGames}>
       {openGames.map((gameID) => (
-        <MenuItem key={gameID} value={gameID}>
+        <MenuItem
+          key={gameID}
+          value={gameID}
+          onClick={(event) => {
+            event.preventDefault();
+            setNewGameID(event.target.value);
+            joinGame();
+          }}
+        >
           {gameID}
         </MenuItem>
       ))}
