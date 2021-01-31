@@ -13,6 +13,7 @@ RESPONSE
 }
 
 
+
 Join
 {
     "email": "mail@mail.com",
@@ -102,6 +103,7 @@ RESPONSE
             "name": "something",
             "location": ([2] = 00, [2] = 00)
         },
-        "myColor" = "White"
+        "myColor" = "White",
+        "size" = int (8, 10, 12, 14, 16)
     }
 }

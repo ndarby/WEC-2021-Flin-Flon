@@ -17,6 +17,7 @@ def read_all_open_games_for_player(email):
     games = []
     query = {"$or": [{"blackPlayer": email, "completed": False}, {"whitePlayer": email, "completed": False}]}
     for item in gameCollection.find(query):
+        del item['_id']
         games.append(item)
     return games
 

@@ -5,6 +5,8 @@ class chessPiece:
     name = ""
     boardSize = 8
 
+
+
     def __init__(self, location, id, name, size):
         self.location = location
         self.id = id
@@ -25,9 +27,13 @@ class chessPiece:
 
         if position in toCheck:
             toCheck.remove(position)
+
         mineSafe = not any(check in myLocations for check in toCheck)
         oppSafe = not any(check in oppLocations for check in toCheck)
         return mineSafe and oppSafe
+
+    def todict(self):
+        return {'location': self.location, 'id': self.id, 'name': self.name, 'boardSize': self.boardSize}
 
 
 
@@ -43,17 +49,71 @@ class vanguard (chessPiece):
         maxX = max(position[0], self.location[0])
         maxY = max(position[1], self.location[1])
 
-        if (maxY - lowY) > (maxX - lowX):
-            # Vertical Long
-            toCheck = [(self.location[0], y) for y in range(lowY, maxY)]
-        elif (maxX - lowX) > (maxY - lowY):
-            toCheck = [(self.location[1]) for x in range(lowX, maxX)]
-            # Horizontal Long
-        else:
+        if lowX == maxX or lowY == maxY:
+            print("here")
             return False
 
-        return self.checkMove(toCheck, position, myLocations, oppLocations)
+        # Path 1
+        if position[1] < self.location[1] and position[0] > self.location[0]:
+            horiz1 = [(x, lowY) for x in range(lowX, maxX + 1)]
+            verti1 = [(lowX, y) for y in range(lowY, maxY + 1)]
 
+            horiz1.extend(verti1)
+
+            # Path 2
+
+            horiz2 = [(x, maxY) for x in range(lowX, maxX + 1)]
+            verti2 = [(maxX, y) for y in range(lowY, maxY + 1)]
+            horiz2.extend(verti2)
+
+        elif position[1] > self.location[1] and position[0] > self.location[0]:
+            horiz1 = [(x, lowY) for x in range(lowX, maxX + 1)]
+            verti1 = [(maxX, y) for y in range(lowY, maxY + 1)]
+
+            horiz1.extend(verti1)
+
+            # Path 2
+
+            horiz2 = [(x, maxY) for x in range(lowX, maxX + 1)]
+            verti2 = [(lowX, y) for y in range(lowY, maxY + 1)]
+
+            horiz2.extend(verti2)
+
+        elif position[1] < self.location[1] and position[0] < self.location[0]:
+            horiz1 = [(x, maxY) for x in range(lowX, maxX + 1)]
+            verti1 = [(lowX, y) for y in range(lowY, maxY + 1)]
+
+            horiz1.extend(verti1)
+
+            # Path 2
+
+            horiz2 = [(x, lowY) for x in range(lowX, maxX + 1)]
+            verti2 = [(maxX, y) for y in range(lowY, maxY + 1)]
+
+            horiz2.extend(verti2)
+
+        else:
+            horiz1 = [(x, maxY) for x in range(lowX, maxX + 1)]
+            verti1 = [(maxX, y) for y in range(lowY, maxY + 1)]
+
+            horiz1.extend(verti1)
+
+            # Path 2
+
+            horiz2 = [(x, lowY) for x in range(lowX, maxX + 1)]
+            verti2 = [(lowX, y) for y in range(lowY, maxY + 1)]
+
+            horiz2.extend(verti2)
+
+        if self.location in horiz1:
+            horiz1.remove(self.location)
+        if self.location in horiz2:
+            horiz2.remove(self.location)
+
+        path1 = self.checkMove(horiz1, position, myLocations, oppLocations)
+        path2 = self.checkMove(horiz2, position, myLocations, oppLocations)
+
+        return path1 or path2
 
 
 class pawn (chessPiece):
@@ -222,4 +282,5 @@ class king(chessPiece):
             return abs(self.location[0] - position[0]) == 1 and position not in myLocations
 
         return False
+
 

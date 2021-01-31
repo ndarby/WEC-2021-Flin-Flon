@@ -1,27 +1,69 @@
 import React, { useState } from "react";
 import { MenuItem, InputLabel } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
+import { useHistory } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import AvailableGamesSelector from "../components/AvailableGamesSelector";
 
-const DashBoard = () => {
+const DashBoard = ({ setGameID }) => {
+  let history = useHistory();
+
+  const [newGameID, setNewGameID] = useState(0);
+
+  const { user } = useAuth0();
+  const { email } = user;
+
   const [response, setResponse] = useState("");
+  const [openGames, setOpenGames] = useState([]);
+  const [screenName, setScreenName] = useState("");
+  const [metrics, setMetrics] = useState({});
 
-  const handleSubmit = (event) => {
+  const getGames = (event) => {
     event.preventDefault();
-    const data = new FormData(event.target);
 
-    fetch("available_games", {
+    fetch("dashboard", {
       method: "POST",
-      body: data,
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setResponse(JSON.stringify(data));
+      .then(({ openGames, message }) => {
+        console.log(openGames);
+        setOpenGames(openGames);
       });
   };
 
+  const joinGame = (event) => {
+    event.preventDefault();
+    fetch("game/join", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, gameID: newGameID }),
+    })
+      .then((res) => res.json())
+      .then(({ success, message }) => {
+        if (success) {
+          setGameID(newGameID);
+          history.push("/gameplay");
+        } else {
+          alert(message);
+        }
+      });
+  };
+
+  const CreateNewGame = (event) => {
+    event.preventDefault();
+    history.push("/creategame");
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <header>
         <h1> Game Dashboard</h1>
         <p>
@@ -30,17 +72,29 @@ const DashBoard = () => {
         </p>
       </header>
 
-      <button>Create new Game!</button>
+      <button onClick={CreateNewGame}> Create new Game! </button>
       <p></p>
 
       <label htmlFor="gameID">Game ID for game you would like to join: </label>
-      <input id="gameID" name="gameID" type="text" />
+      <input
+        id="gameID"
+        name="gameID"
+        type="text"
+        onChange={(event) => {
+          setNewGameID(parseInt(event.target.value));
+        }}
+      />
 
-      <button>Request to join game</button>
+      <button onClick={joinGame}>Request to join game</button>
       <p></p>
 
       <InputLabel id="label">Available Games for you!</InputLabel>
-      <Select labelId="label" id="select" value="20"></Select>
+      <AvailableGamesSelector
+        openGames={openGames}
+        getGames={getGames}
+        setNewGameID={setNewGameID}
+        joinGame={joinGame}
+      />
 
       <h1> Your Metrics</h1>
       <p>{response}</p>
