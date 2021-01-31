@@ -5,6 +5,8 @@ class chessPiece:
     name = ""
     boardSize = 8
 
+
+
     def __init__(self, location, id, name, size):
         self.location = location
         self.id = id
@@ -29,6 +31,9 @@ class chessPiece:
         mineSafe = not any(check in myLocations for check in toCheck)
         oppSafe = not any(check in oppLocations for check in toCheck)
         return mineSafe and oppSafe
+
+    def todict(self):
+        return {'location': self.location, 'id': self.id, 'name': self.name, 'boardSize': self.boardSize}
 
 
 
@@ -277,4 +282,5 @@ class king(chessPiece):
             return abs(self.location[0] - position[0]) == 1 and position not in myLocations
 
         return False
+
 

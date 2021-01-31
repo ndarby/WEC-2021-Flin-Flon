@@ -28,8 +28,6 @@ class chessGame:
         else:
             self.whitePlayer = email
 
-        Services.GameService.create_new_game(self.todict())
-
         return
 
     def playerJoin(self, email):
@@ -97,5 +95,5 @@ class chessGame:
         return [self.chessBoard, self.chessBoard.size, self.chessBoard.whoseTurn, player]
 
     def todict(self):
-        return {'gameID': self.gameID, 'chessBoard': 0, 'blackPlayer': self.blackPlayer, 'whitePlayer': self.whitePlayer, 'completed': self.completed, 'winner': self.winner}
+        return {'gameID': self.gameID, 'chessBoard': chessBoard.todict(), 'blackPlayer': self.blackPlayer, 'whitePlayer': self.whitePlayer, 'completed': self.completed, 'winner': self.winner}
 

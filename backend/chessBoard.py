@@ -11,6 +11,8 @@ class chessBoard:
     whiteQueen = 5
     blackQueen = 5
 
+
+
     # 8 - 16 square
 
     def __init__(self, size):
@@ -212,6 +214,16 @@ class chessBoard:
         self.piecesBlack = blackBack
 
         return
+
+    def todict(self):
+        whitePieces = []
+        for item in self.piecesWhite:
+            whitePieces.append(item.todict())
+        blackPieces = []
+        for item in self.piecesBlack:
+            blackPieces.append(item.todict())
+
+        return {'piecesWhite': whitePieces, 'piecesBlack': blackPieces, 'size': self.size, 'whoseTurn': self.whoseTurn, 'gameID': self.gameID}
 
     def initSizeTen(self):
         return

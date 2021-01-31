@@ -6,6 +6,9 @@ class Player:
     losses = 0
     totalGamesPlayed = 0
 
+    def todict(self):
+        return {'email': self.email, 'screenName': self.screenName, 'wins': self.wins, 'losses': self.losses, 'totalGamesPlayed': self.totalGamesPlayed}
+
     def __init__(self, email, screenName):
 
         self.email = email
