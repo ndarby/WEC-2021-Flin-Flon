@@ -15,8 +15,8 @@ class chessGame:
     def __init__(self, email, color, size):
 
         self.gameID = randint(100000, 999999)
-        while not Services.GameService.check_game_id_unused(self.gameID):
-            self.gameID = randint(100000, 999999)
+        # while not Services.GameService.check_game_id_unused(self.gameID):
+        #     self.gameID = randint(100000, 999999)
 
         self.chessBoard = chessBoard(size)
         if color.lower() == "white":
@@ -26,7 +26,7 @@ class chessGame:
         else:
             self.whitePlayer = email
 
-        Services.GameService.create_new_game(self)
+        Services.GameService.create_new_game(self.__dict__)
 
         return
 

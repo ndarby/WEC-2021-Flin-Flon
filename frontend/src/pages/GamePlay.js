@@ -34,7 +34,11 @@ const GamePlay = ({ gameID }) => {
   const setState = async () => {
     const response = await fetch("game/currentstate", {
       method: "POST",
-      body: { gameID: gameID, email: email },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ gameID: gameID, email: email }),
     });
     if (!response.ok) {
       throw new Error("bad network response");
@@ -54,7 +58,16 @@ const GamePlay = ({ gameID }) => {
   const makeMove = async (ID, location) => {
     const response = await fetch("game/makemove", {
       method: "POST",
-      body: { gameID: gameID, email: email, pieceID: ID, location: location },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameID: gameID,
+        email: email,
+        pieceID: ID,
+        location: location,
+      }),
     });
     const { move, reason } = await response.json();
     if (!move) {
@@ -68,7 +81,11 @@ const GamePlay = ({ gameID }) => {
     const setup = async () => {
       const response = await fetch("game/currentstate", {
         method: "POST",
-        body: { gameID: gameID, email: email },
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gameID: gameID, email: email }),
       });
       if (!response.ok) {
         throw new Error("bad network response");
@@ -98,7 +115,11 @@ const GamePlay = ({ gameID }) => {
   const handleResign = () => {
     fetch("game/resign", {
       method: "POST",
-      body: { gameID: gameID, email: email },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ gameID: gameID, email: email }),
     })
       .then((response) => response.json())
       .then(({ success }) => {
@@ -116,7 +137,7 @@ const GamePlay = ({ gameID }) => {
         IDArray={IDArray}
         makeMove={makeMove()}
       />
-      <Button variant="contained" onClick={handleResign()}>
+      <Button variant="contained" onClick={handleResign}>
         Resign
       </Button>
     </div>

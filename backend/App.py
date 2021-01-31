@@ -1,6 +1,7 @@
 from flask import Flask, request, send_file, redirect, url_for
+import flask
 from werkzeug.utils import secure_filename
-import Services
+from Services import GameService, PlayerService
 import os
 from chessGame import chessGame
 from player import Player
@@ -19,48 +20,65 @@ def frontend():
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
-def playerDashboard(email):
+def playerDashboard():
+    content = request.json
+    print(content)
+    email = content['email']
 
-    foundPlayer = Services.PlayerService.read_player(email)
+    foundPlayer = PlayerService.read_player(email)
 
     if foundPlayer is None:
         newPlayer = Player(email, email)
-        Services.PlayerService.add_player(newPlayer)
+        PlayerService.add_player(newPlayer)
         return {"Success": True, "Message": "Created new player", "Player": newPlayer, "OpenGames": []}
 
-    allGames = Services.GameService.read_all_open_games_for_player(foundPlayer.email)
+    allGames = GameService.read_all_open_games_for_player(foundPlayer.email)
 
     return {"Success": True, "Message": "Found player", "Player": foundPlayer, "OpenGames": allGames}
 
 
 @app.route('/dashboard/changename', methods=['GET', 'POST'])
-def playerDashboard(name, email):
+def changeName():
+    content = request.json
+    print(content)
+    name = content['name']
+    email = content['email']
 
-    foundPlayer = Services.PlayerService.read_player(email)
+    foundPlayer = PlayerService.read_player(email)
 
     if foundPlayer is None:
         return {"Success": False, "Message": "Failed to find player", "Player": None, "OpenGames": []}
 
     foundPlayer.screenName = name
-    Services.PlayerService.update_player(email, foundPlayer)
+    PlayerService.update_player(email, foundPlayer)
 
     return {"Success": True, "Message": "Updated Name", "Player": foundPlayer}
 
 
 @app.route('/game/create', methods=['GET', 'POST'])
-def createGame(email, color, size):
+def createGame():
+    content = request.json
+    print(content)
+    # REMOVE
+    email = content['email']
+    color = content['color']
+    size = content['size']
 
     newGame = chessGame(email, color, size)
 
-    success, message = Services.GameService.create_new_game(newGame)
+    success, message = GameService.create_new_game(newGame)
 
-    return {"Success": success, "Message": message, "GameID": newGame.gameID}
+    return {"success": success, "message": message, "gameID": newGame.gameID}
 
 
-@app.route('game/join', methods=['GET', 'POST'])
-def joinGame(email, gameID):
+@app.route('/game/join', methods=['GET', 'POST'])
+def joinGame():
+    content = request.json
+    print(content)
+    email = content['email']
+    gameID = content['gameID']
 
-    foundGame = Services.GameService.get_game_by_id(gameID)
+    foundGame = GameService.get_game_by_id(gameID)
 
     if foundGame is None:
         return {"Success": False, "Message": "Could not find game"}
@@ -68,14 +86,22 @@ def joinGame(email, gameID):
     if not foundGame.playerJoin(email):
         return {"Success": False, "Message": "Could not join game"}
 
-    success, message = Services.GameService.update_game(gameID, foundGame)
+    success, message = GameService.update_game(gameID, foundGame)
 
     return {"Success": success, "Message": message}
 
 
-@app.route('game/makemove', methods=['GET', 'POST'])
-def makeMove(gameID, email, pieceID, location):
-    foundGame = Services.GameService.get_game_by_id(gameID)
+@app.route('/game/makemove', methods=['GET', 'POST'])
+def makeMove():
+    content = request.json
+    print(content)
+    gameID = content['gameID']
+    email = content['email']
+    pieceID = content['pieceID']
+    location = content['location']
+
+    foundGame = GameService.get_game_by_id(gameID)
+
 
     if foundGame is None:
         return {"Success": False, "Message": "Could not find game"}
@@ -85,10 +111,14 @@ def makeMove(gameID, email, pieceID, location):
     return {"Success": out[0], "Message": out[1]}
 
 
-@app.route('game/resign', methods=['GET', 'POST'])
-def resign(gameID, email):
+@app.route('/game/resign', methods=['GET', 'POST'])
+def resign():
+    content = request.json
+    print(content)
+    gameID = content['gameID']
+    email = content['email']
 
-    foundGame = Services.GameService.get_game_by_id(gameID)
+    foundGame = GameService.get_game_by_id(gameID)
 
     if foundGame is None:
         return {"Success": False, "Message": "Could not find game"}
@@ -99,10 +129,14 @@ def resign(gameID, email):
     return {"Success": False, "Message": "Could not resign game"}
 
 
-@app.route('game/currentstate', methods=['GET', 'POST'])
-def getGameBoardState(gameID, email):
+@app.route('/game/currentstate', methods=['GET', 'POST'])
+def getGameBoardState():
+    content = request.json
+    print(content)
+    gameID = content['gameID']
+    email = content['email']
 
-    foundGame = Services.GameService.get_game_by_id(gameID)
+    foundGame = GameService.get_game_by_id(gameID)
     if foundGame is None:
         return {"Success": False, "Message": "Could not find game"}
 
