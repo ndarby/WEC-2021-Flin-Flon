@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 import Services
 import os
 from chessGame import chessGame
+from player import Player
 
 UPLOAD_FOLDER = 'uploads'
 
@@ -23,13 +24,27 @@ def playerDashboard(email):
     foundPlayer = Services.PlayerService.read_player(email)
 
     if foundPlayer is None:
-        return {"Success": False, "Message": "Could not find player"}
+        newPlayer = Player(email, email)
+        Services.PlayerService.add_player(newPlayer)
+        return {"Success": True, "Message": "Created new player", "Player": newPlayer, "OpenGames": []}
 
     allGames = Services.GameService.read_all_open_games_for_player(foundPlayer.email)
 
     return {"Success": True, "Message": "Found player", "Player": foundPlayer, "OpenGames": allGames}
 
-    pass
+
+@app.route('/dashboard/changename', methods=['GET', 'POST'])
+def playerDashboard(name, email):
+
+    foundPlayer = Services.PlayerService.read_player(email)
+
+    if foundPlayer is None:
+        return {"Success": False, "Message": "Failed to find player", "Player": None, "OpenGames": []}
+
+    foundPlayer.screenName = name
+    Services.PlayerService.update_player(email, foundPlayer)
+
+    return {"Success": True, "Message": "Updated Name", "Player": foundPlayer}
 
 
 @app.route('/game/create', methods=['GET', 'POST'])

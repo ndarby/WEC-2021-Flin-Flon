@@ -46,8 +46,6 @@ class chessGame:
         self.completed = True
         self.winner = playerWin
 
-
-
         if playerWin == self.whitePlayer:
             player = "White"
         elif playerWin == self.blackPlayer:
