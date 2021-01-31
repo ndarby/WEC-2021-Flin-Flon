@@ -112,7 +112,8 @@ const GamePlay = ({ gameID }) => {
     setState();
   }, []);
 
-  const handleResign = () => {
+  const handleResign = (event) => {
+    event.preventDefault();
     fetch("game/resign", {
       method: "POST",
       headers: {

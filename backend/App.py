@@ -30,11 +30,11 @@ def playerDashboard():
     if foundPlayer is None:
         newPlayer = Player(email, email)
         PlayerService.add_player(newPlayer)
-        return {"Success": True, "Message": "Created new player", "Player": newPlayer, "OpenGames": []}
+        return {"success": True, "message": "created new player", "player": newPlayer, "openGames": []}
 
     allGames = GameService.read_all_open_games_for_player(foundPlayer.email)
 
-    return {"Success": True, "Message": "Found player", "Player": foundPlayer, "OpenGames": allGames}
+    return {"success": True, "sessage": "found player", "player": foundPlayer, "openGames": allGames}
 
 
 @app.route('/dashboard/changename', methods=['GET', 'POST'])
@@ -47,12 +47,12 @@ def changeName():
     foundPlayer = PlayerService.read_player(email)
 
     if foundPlayer is None:
-        return {"Success": False, "Message": "Failed to find player", "Player": None, "OpenGames": []}
+        return {"success": False, "message": "Failed to find player", "player": None, "openGames": []}
 
     foundPlayer.screenName = name
     PlayerService.update_player(email, foundPlayer)
 
-    return {"Success": True, "Message": "Updated Name", "Player": foundPlayer}
+    return {"success": True, "message": "Updated Name", "player": foundPlayer}
 
 
 @app.route('/game/create', methods=['GET', 'POST'])
@@ -81,14 +81,14 @@ def joinGame():
     foundGame = GameService.get_game_by_id(gameID)
 
     if foundGame is None:
-        return {"Success": False, "Message": "Could not find game"}
+        return {"success": False, "message": "Could not find game"}
 
     if not foundGame.playerJoin(email):
-        return {"Success": False, "Message": "Could not join game"}
+        return {"success": False, "message": "Could not join game"}
 
     success, message = GameService.update_game(gameID, foundGame)
 
-    return {"Success": success, "Message": message}
+    return {"success": success, "message": message}
 
 
 @app.route('/game/makemove', methods=['GET', 'POST'])
@@ -104,11 +104,11 @@ def makeMove():
 
 
     if foundGame is None:
-        return {"Success": False, "Message": "Could not find game"}
+        return {"success": False, "message": "Could not find game"}
 
     out = foundGame.makeMove(email, pieceID, location)
 
-    return {"Success": out[0], "Message": out[1]}
+    return {"success": out[0], "message": out[1]}
 
 
 @app.route('/game/resign', methods=['GET', 'POST'])
@@ -121,12 +121,12 @@ def resign():
     foundGame = GameService.get_game_by_id(gameID)
 
     if foundGame is None:
-        return {"Success": False, "Message": "Could not find game"}
+        return {"success": False, "message": "Could not find game"}
 
     if foundGame.playerResign(email):
-        return {"Success": True, "Message": "Player Resigned"}
+        return {"success": True, "message": "Player Resigned"}
 
-    return {"Success": False, "Message": "Could not resign game"}
+    return {"success": False, "message": "Could not resign game"}
 
 
 @app.route('/game/currentstate', methods=['GET', 'POST'])
@@ -138,48 +138,48 @@ def getGameBoardState():
 
     foundGame = GameService.get_game_by_id(gameID)
     if foundGame is None:
-        return {"Success": False, "Message": "Could not find game"}
+        return {"success": False, "message": "Could not find game"}
 
     out = foundGame.getGameBoard(email)
     if out == -1:
-        return {"Success": False, "Message": "Could not find player"}
+        return {"success": False, "message": "Could not find player"}
 
     return {
-        "Success": True, "Message": "Got Board State",
-        "Board": out[0],
-        "Size": out[1],
-        "Turn": out[2],
-        "Player": out[3]
+        "success": True, "message": "Got Board State",
+        "board": out[0],
+        "size": out[1],
+        "turn": out[2],
+        "player": out[3]
     }
 
 
-@app.route('/requests', methods=['GET', 'POST'])
-def requests():
-    print(f'method: {request.method}')
-    print('---form data fields---')
-    for key, value in request.form.items():
-        print(f'{key}: {value}')
-    return {'gameID': request.form['gameID']}
-
-
-@app.route('/upload_request', methods=['POST'])
-def upload():
-    try:
-        file = request.files['file']
-    except KeyError:
-        return {'message': 'no file found'}
-    filename = secure_filename(file.filename)
-    if not filename:
-        return {'message': 'no filename given'}
-    destination = os.path.join(UPLOAD_FOLDER, filename)
-    file.save(destination)
-    return {'message': 'file uploaded successfully'}
-
-
-@app.route('/download_request', methods=['POST', 'GET'])
-def download():
-    filename = os.listdir('uploads')[0]
-    return send_file(os.path.join('uploads', filename), attachment_filename=filename)
+# @app.route('/requests', methods=['GET', 'POST'])
+# def requests():
+#     print(f'method: {request.method}')
+#     print('---form data fields---')
+#     for key, value in request.form.items():
+#         print(f'{key}: {value}')
+#     return {'gameID': request.form['gameID']}
+#
+#
+# @app.route('/upload_request', methods=['POST'])
+# def upload():
+#     try:
+#         file = request.files['file']
+#     except KeyError:
+#         return {'message': 'no file found'}
+#     filename = secure_filename(file.filename)
+#     if not filename:
+#         return {'message': 'no filename given'}
+#     destination = os.path.join(UPLOAD_FOLDER, filename)
+#     file.save(destination)
+#     return {'message': 'file uploaded successfully'}
+#
+#
+# @app.route('/download_request', methods=['POST', 'GET'])
+# def download():
+#     filename = os.listdir('uploads')[0]
+#     return send_file(os.path.join('uploads', filename), attachment_filename=filename)
 
 
 @app.errorhandler(404)

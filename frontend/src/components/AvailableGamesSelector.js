@@ -14,6 +14,7 @@ const AvailableGamesSelector = ({
           key={gameID}
           value={gameID}
           onClick={(event) => {
+            event.preventDefault();
             setNewGameID(event.target.value);
             joinGame();
           }}
