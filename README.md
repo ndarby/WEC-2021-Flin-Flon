@@ -10,6 +10,7 @@ Practice for WEC 2020
 **Jared Gillis**
 
 **Nathan Darby**
+from WEC-2021-Flin-Flon/frontend run sudo install requirements.txt
 
 from WEC-2021-Flin-Flon/frontend run "npm install". This should install all dependencies. 
 
