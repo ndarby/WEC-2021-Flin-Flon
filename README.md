@@ -11,4 +11,13 @@ Practice for WEC 2020
 
 **Nathan Darby**
 
-To install dependencies, open a bash terminal in the root WEC-2020-Practice folder and run "source setup"
+from WEC-2021-Flin-Flon/frontend run "npm install". This should install all dependencies. 
+
+Then from WEC-2021-Flin-Flon/frontend run "npm run build", followed by "npm run start"
+
+cd ..
+cd backend
+
+run "python App.py"
+
+On a browser navigate to localhost:5000
