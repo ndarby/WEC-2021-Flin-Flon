@@ -18,17 +18,20 @@ function App() {
       <TopMenuBar />
       <Switch>
         <Route path="/" component={isAuthenticated ? DashBoard : Home} exact />
-<<<<<<< Updated upstream
         <ProtectedRoute
           path="/gameplay"
           render={(props) => <GamePlay {...props} gameID={gameID} />}
         />
-=======
-        <ProtectedRoute path="/gameplay" component={GamePlay} />
-        <Route path = "/creategame" component = {CreateGame}/>
->>>>>>> Stashed changes
+        <ProtectedRoute
+          path="/gameplay"
+          component={GamePlay}
+          render={(props) => <GamePlay {...props} setGameID={setGameID} />}
+        />
+        <ProtectedRoute
+          path="/creategame"
+          render={(props) => <CreateGame {...props} setGameID={setGameID} />}
+        />
         <Route component={PageNotFound} />
-
       </Switch>
     </div>
   );
